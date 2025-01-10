@@ -16,10 +16,16 @@ jobs:
         with:
           fetch-depth: 1
 
+      # Файл .tgz должен содержать либо один файл 'default.nix', либо один каталог,
+      # в котором кроме 'default.nix' могут находиться и другие файлы
+      # FIXME: https://github.com/NixOS/nix/pull/11195 - возможно снимает это ограничение
+
       - name: Make tarboll file
         run: |
-          cp default.nix scripts/
-          tar czf starter.tgz scripts
+          mkdir tarboll
+          cp default.nix tarboll/
+          cp *.sh tarboll/
+          tar czf starter.tgz tarboll
 
       - name: Upload assets
         uses: shogo82148/actions-upload-release-asset@v1
