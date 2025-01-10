@@ -12,5 +12,6 @@ mkShellNoCC {
     echo -n "Hostname: "
     read -r host
     echo "Host = $host"
+    exit 0
     '';
 }
