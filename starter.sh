@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo Hello from script, Radimir! | cowsay | lolcat
+echo Hello from new script, Radimir! | cowsay | lolcat
 echo
 echo -n "Hostname: "
 read -r host

@@ -1,4 +1,5 @@
-with import <nixpkgs> {};
+{ pkgs ? import <nixpkgs> {} }:
+
 mkShellNoCC {
 
   packages = with pkgs; [
