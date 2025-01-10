@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - run: tar czf starter.tgz *.nix *.sh
+      - run: tar czf starter.tgz *.nix scripts
 
       - name: Upload assets
         uses: shogo82148/actions-upload-release-asset@v1

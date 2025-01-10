@@ -6,7 +6,7 @@ mkShellNoCC {
     lolcat
   ];
 
-  shellHook = builtins.readFile ./starter.sh;
+  shellHook = builtins.readFile ./scripts/starter.sh;
 
 #  shellHook = ''
 #    echo Hello, Radimir! | cowsay | lolcat
