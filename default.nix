@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
 
-mkShellNoCC {
+pkgs.mkShellNoCC {
 
   packages = with pkgs; [
     cowsay
