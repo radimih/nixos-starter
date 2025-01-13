@@ -7,5 +7,6 @@ pkgs.mkShellNoCC {
     lolcat
   ];
 
-  shellHook = builtins.readFile ./starter.sh;
+  # Run starter.sh script and immediately exit from nix shell
+  shellHook = builtins.readFile ./starter.sh + "\nexit 0";
 }
