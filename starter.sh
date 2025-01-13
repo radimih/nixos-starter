@@ -2,10 +2,13 @@
 
 GITHUB_REPO=radimih/nixdots
 NIXOS_CONFIG_FILE=/etc/nixos/configuration.nix
+NIXOS_CONFIG_FILE=./conf-test.nix
+
+set -euo pipefail
 
 main() {
 
-    begin_msg="
+    local begin_msg="
 This script does the following:
 
 1. Updates the file \033[1mNixOS configuration file\033[22m ($NIXOS_CONFIG_FILE):
@@ -19,7 +22,7 @@ This script does the following:
 Let's go!
 ---------
 "
-    end_msg="
+    local end_msg="
 Run the following command to make the changes in the NixOS configuration take effect:
 
   \033[1msudo nixos-rebuild switch\033[22m
@@ -36,6 +39,17 @@ Run the following command to make the changes in the NixOS configuration take ef
 }
 
 step_1_update_config() {
+
+    # TODO: remove
+    if [[ ! -f $NIXOS_CONFIG_FILE ]]; then echo Reset config file; cp configuration.nix $NIXOS_CONFIG_FILE; fi
+
+    local experimental_features='[ "nix-command" "flakes" ]'
+    local experimental_param='nix.settings.experimental-features'
+
+    if ! grep --silent --no-messages "$experimental_param" $NIXOS_CONFIG_FILE
+    then
+        sed --in-place "/  imports =/i\  $experimental_param = $experimental_features;\n" $NIXOS_CONFIG_FILE
+    fi
     echo -n "Hostname: "
     read -r host
     echo "Host = $host"
