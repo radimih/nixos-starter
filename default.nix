@@ -3,8 +3,7 @@
 pkgs.mkShellNoCC {
 
   packages = with pkgs; [
-    cowsay
-    lolcat
+    git
   ];
 
   # Run starter.sh script and immediately exit from nix shell
