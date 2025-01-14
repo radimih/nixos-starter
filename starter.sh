@@ -29,11 +29,19 @@ Run the following command to make the changes in the NixOS configuration take ef
   \033[1msudo nixos-rebuild switch\033[22m
 "
 
+    local hostname_current=$(sed --silent -E 's/.*hostName = "(.*)".*/\1/p' $NIXOS_CONFIG_FILE)
+    local hostname_new
+
     clear
     echo -e "$begin_msg"
 
-    step_1_update_config
-    step_2_generate_ssh_key
+    echo -n "Enter new hostname ([Enter] - leave current hostname = '$hostname_current'): "
+    read -r hostname_new
+    echo
+    if [[ -z "$hostname_new" ]]; then hostname_new=$hostname_current; fi
+
+    step_1_update_config $hostname_current $hostname_new
+    step_2_generate_ssh_key $hostname_new
     step_3_clone_dotfiles
 
     echo -e "$end_msg"
@@ -41,26 +49,23 @@ Run the following command to make the changes in the NixOS configuration take ef
 
 step_1_update_config() {
 
-    local hostname_new
-    local hostname_current=$(sed --silent -E 's/.*hostName = "(.*)".*/\1/p' $NIXOS_CONFIG_FILE)
+    local hostname_current=$1
+    local hostname_new=$2
     local experimental_param='nix.settings.experimental-features'
     local experimental_features='[ "nix-command" "flakes" ]'
 
     echo Running step 1...
     echo
 
-    echo -n "Enter hostname ([Enter] - leave current hostname = '$hostname_current'): "
-    read -r hostname_new
-
-    echo
     sudo --validate
+    echo
 
-    if [[ -n "$hostname_new" ]]
+    if [[ "$hostname_new" == "$hostname_current" ]]
     then
+        echo ... Hostname already updated
+    else
         sudo sed --in-place -E 's/^(.*hostName = ").*(".*$)/\1'$hostname_new'\2/' $NIXOS_CONFIG_FILE
         echo ... Hostname updated
-    else
-        echo ... Hostname already updated
     fi
 
     if ! grep --silent --no-messages "$experimental_param" $NIXOS_CONFIG_FILE
@@ -77,6 +82,7 @@ step_1_update_config() {
 
 step_2_generate_ssh_key() {
 
+    local hostname_new=$1
     local keyfile=$HOME/.ssh/id_ed25519
 
     echo Running step 2...
@@ -84,11 +90,11 @@ step_2_generate_ssh_key() {
 
     if [[ -f $keyfile ]]
     then
-        echo ... SSH key \'$keyfile\' already exists
+        ssh-keygen -f $keyfile -c -C $USER@$hostname_new -q > /dev/null
+        echo ... SSH key \'$keyfile\' already exists, updated key comment
     else
         # Generate key pair without passphrase
-        # TODO: комментарий у ключа содержит еще предыдущее название хоста
-        ssh-keygen -t ed25519 -N "" -f $keyfile
+        ssh-keygen -t ed25519 -N "" -f $keyfile -C $USER@$hostname_new
     fi
     echo
 }
