@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 DOTFILES_SUBDIR=starter-dotfiles
 NIXOS_CONFIG_FILE=/etc/nixos/configuration.nix
-
-set -euo pipefail
 
 main() {
 
@@ -79,7 +79,6 @@ step_1_update_config() {
         echo ... Experimental features already enabled
     fi
 
-    sudo --remove-timestamp
     echo
 }
 
