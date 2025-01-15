@@ -23,8 +23,9 @@ Immediately after installing the NixOS (preferably without installing the GUI), 
 nix-shell https://github.com/radimih/nixos-starter/releases/latest/download/starter.tgz
 ```
 
-Next, run the following command to make the changes in the NixOS configuration take effect:
+Next, run the following commands to make the changes in the NixOS configuration take effect:
 
 ```bash
 sudo nixos-rebuild switch
+reboot
 ```

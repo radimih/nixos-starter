@@ -23,9 +23,10 @@ Let's go!
 ---------
 "
     local end_msg="
-Run the following command to make the changes in the NixOS configuration take effect:
+Run the following commands to make the changes in the NixOS configuration take effect:
 
   \033[1msudo nixos-rebuild switch\033[22m
+  \033[1mreboot\033[22m
 "
 
     local hostname_current=$(sed --silent -E 's/.*hostName = "(.*)".*/\1/p' $NIXOS_CONFIG_FILE)
