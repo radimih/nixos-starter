@@ -3,7 +3,7 @@
 pkgs.mkShellNoCC {
 
   packages = with pkgs; [
-    git
+    unzip
   ];
 
   # Run starter.sh script and immediately exit from nix shell
