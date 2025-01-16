@@ -17,6 +17,15 @@ All necessary input data will be requested during the execution of the tool.
 
 ## Usage
 
+> #### Internet connection note
+> 
+> If you used the graphical installer of NixOS and selected `No Desktop` for the minimal installation,
+> and the Internet is only available via **Wi-Fi**, then use the following command to set up a network connection:
+> 
+> ```bash
+> nmcli device wifi connect <SSID> password '<password>'
+> ```
+
 Immediately after installing the NixOS (preferably without installing the GUI), run the following command:
 
 ```bash
