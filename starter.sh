@@ -13,6 +13,7 @@ This script does the following:
 1. Updates the file \033[1mNixOS configuration file\033[22m ($NIXOS_CONFIG_FILE):
      - changes default hostname
      - enables experimental features
+     - adds the git program to the system packages
 
 2. Generates the user's \033[1mssh key\033[22m if it does not exist
 
@@ -56,6 +57,7 @@ step_1_update_config() {
     local hostname_new=$2
     local experimental_param='nix.settings.experimental-features'
     local experimental_features='[ "nix-command" "flakes" ]'
+    local git_package='git  # Necessary for working with flakes'
 
     echo "Running step 1 (updating configuration.nix)..."
     echo
@@ -77,6 +79,14 @@ step_1_update_config() {
         echo ... Experimental features enabled
     else
         echo ... Experimental features already enabled
+    fi
+
+    if ! grep --silent --no-messages "$git_package" $NIXOS_CONFIG_FILE
+    then
+        sudo sed --in-place "/environment.systemPackages = with pkgs; \[/a\ \ \ \ $git_package" $NIXOS_CONFIG_FILE
+        echo ... git program added
+    else
+        echo ... git program already added
     fi
 
     echo

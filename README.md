@@ -5,6 +5,8 @@ This is a tool for initial preparation of a newly installed NixOS. It does the f
 1. Updates the file **NixOS configuration file** (`/etc/nixos/configuration.nix`):
      - changes default hostname (`nixos`)
      - enables experimental features (`flakes`, `nix-command`)
+     - adds the `git` program to the system packages (`environment.systemPackages`)
+       > flakes does not work without this program
 
 1. Generates the user's **ssh key** if it does not exist
 
@@ -18,10 +20,10 @@ All necessary input data will be requested during the execution of the tool.
 ## Usage
 
 > #### Internet connection note
-> 
+>
 > If you used the graphical installer of NixOS and selected `No Desktop` for the minimal installation,
 > and the Internet is only available via **Wi-Fi**, then use the following command to set up a network connection:
-> 
+>
 > ```bash
 > nmcli device wifi connect <SSID> password '<password>'
 > ```
