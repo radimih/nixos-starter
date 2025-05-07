@@ -4,7 +4,7 @@ This is a tool for initial preparation of a newly installed NixOS. It does the f
 
 1. Updates the file **NixOS configuration file** (`/etc/nixos/configuration.nix`):
      - changes default hostname (`nixos`)
-     - enables experimental features (`flakes`, `nix-command`)
+     - enables experimental features (`flakes`, `nix-command`, `pipe-operators`)
      - adds the `git` program to the system packages (`environment.systemPackages`)
        > flakes does not work without this program
 

@@ -56,7 +56,7 @@ step_1_update_config() {
     local hostname_current=$1
     local hostname_new=$2
     local experimental_param='nix.settings.experimental-features'
-    local experimental_features='[ "nix-command" "flakes" ]'
+    local experimental_features='[ "flakes" "nix-command" "pipe-operators" ]'
     local git_package='git  # Necessary for working with flakes'
 
     echo "Running step 1 (updating configuration.nix)..."
