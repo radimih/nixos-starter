@@ -101,7 +101,7 @@ step_2_generate_ssh_keys() {
     echo "Running step 2 (generation host and user SSH keys)..."
     echo
 
-    step_2_generate_ssh_key $hostname_new $keyfile_host
+    (sudo step_2_generate_ssh_key $hostname_new $keyfile_host)
     step_2_generate_ssh_key $hostname_new $keyfile_user
 }
 
