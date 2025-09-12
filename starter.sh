@@ -114,13 +114,15 @@ step_2_generate_ssh_key() {
     echo "generate $keyfile..."
     echo
 
+    [[ -z "$sudo" ]] && username=$USER || username=host
+
     if [[ -f $keyfile ]]
     then
-        $sudo ssh-keygen -f $keyfile -c -C $USER@$hostname_new -q > /dev/null
+        $sudo ssh-keygen -f $keyfile -c -C $username@$hostname_new -q > /dev/null
         echo ... SSH key \'$keyfile\' already exists, updated key comment
     else
         # Generate key pair without passphrase
-        $sudo ssh-keygen -t ed25519 -N "" -f $keyfile -C $USER@$hostname_new
+        $sudo ssh-keygen -t ed25519 -N "" -f $keyfile -C $username@$hostname_new
     fi
     echo
 }
