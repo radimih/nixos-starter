@@ -109,7 +109,7 @@ step_2_generate_ssh_key() {
 
     local hostname_new=$1
     local keyfile=$2
-    local sudo=$3
+    local sudo=${3:-}
 
     echo "generate $keyfile..."
     echo
