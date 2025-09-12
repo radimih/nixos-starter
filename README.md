@@ -8,7 +8,7 @@ This is a tool for initial preparation of a newly installed NixOS. It does the f
      - adds the `git` program to the system packages (`environment.systemPackages`)
        > flakes does not work without this program
 
-1. Generates the user's **ssh key** if it does not exist
+1. Generates host and user **ssh keys** if they do not exist
 
 1. _(optional)_ Downloads the contents of the main branch of the specified **GitHub repo** to the
    `~/starter-dotfiles` directory.

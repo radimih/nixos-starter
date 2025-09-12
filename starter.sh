@@ -15,7 +15,7 @@ This script does the following:
      - enables experimental features
      - adds the git program to the system packages
 
-2. Generates the user's \033[1mssh key\033[22m if it does not exist
+2. Generates host and user \033[1mssh keys\033[22m if they do not exist
 
 3. Downloads the contents of the main branch of the \033[1mGitHub dotfiles repo\033[22m to the
    ~/$DOTFILES_SUBDIR directory. ATTENTION! Not supported old 'master' branch.
@@ -45,7 +45,7 @@ Run the following commands to make the changes in the NixOS configuration take e
     if [[ -z "$hostname_new" ]]; then hostname_new=$hostname_current; fi
 
     step_1_update_config $hostname_current $hostname_new
-    step_2_generate_ssh_key $hostname_new
+    step_2_generate_ssh_keys $hostname_new
     step_3_download_dotfiles "$github_repo"
 
     echo -e "$end_msg"
@@ -92,21 +92,37 @@ step_1_update_config() {
     echo
 }
 
+step_2_generate_ssh_keys() {
+
+    local hostname_new=$1
+    local keyfile_host=/etc/ssh/ssh_host_ed25519_key
+    local keyfile_user=$HOME/.ssh/id_ed25519
+
+    echo "Running step 2 (generation host and user SSH keys)..."
+    echo
+
+    step_2_generate_ssh_key $hostname_new $keyfile_host sudo
+    step_2_generate_ssh_key $hostname_new $keyfile_user
+}
+
 step_2_generate_ssh_key() {
 
     local hostname_new=$1
-    local keyfile=$HOME/.ssh/id_ed25519
+    local keyfile=$2
+    local sudo=${3:-}
 
-    echo "Running step 2 (generation user SSH key)..."
+    echo "generate $keyfile..."
     echo
+
+    [[ -z "$sudo" ]] && username=$USER || username=host
 
     if [[ -f $keyfile ]]
     then
-        ssh-keygen -f $keyfile -c -C $USER@$hostname_new -q > /dev/null
+        $sudo ssh-keygen -f $keyfile -c -C $username@$hostname_new -q > /dev/null
         echo ... SSH key \'$keyfile\' already exists, updated key comment
     else
         # Generate key pair without passphrase
-        ssh-keygen -t ed25519 -N "" -f $keyfile -C $USER@$hostname_new
+        $sudo ssh-keygen -t ed25519 -N "" -f $keyfile -C $username@$hostname_new
     fi
     echo
 }
