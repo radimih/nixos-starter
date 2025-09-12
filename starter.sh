@@ -101,7 +101,7 @@ step_2_generate_ssh_keys() {
     echo "Running step 2 (generation host and user SSH keys)..."
     echo
 
-    (sudo step_2_generate_ssh_key $hostname_new $keyfile_host)
+    step_2_generate_ssh_key $hostname_new $keyfile_host sudo
     step_2_generate_ssh_key $hostname_new $keyfile_user
 }
 
@@ -109,17 +109,18 @@ step_2_generate_ssh_key() {
 
     local hostname_new=$1
     local keyfile=$2
+    local sudo=$3
 
     echo "generate $keyfile..."
     echo
 
     if [[ -f $keyfile ]]
     then
-        ssh-keygen -f $keyfile -c -C $USER@$hostname_new -q > /dev/null
+        $sudo ssh-keygen -f $keyfile -c -C $USER@$hostname_new -q > /dev/null
         echo ... SSH key \'$keyfile\' already exists, updated key comment
     else
         # Generate key pair without passphrase
-        ssh-keygen -t ed25519 -N "" -f $keyfile -C $USER@$hostname_new
+        $sudo ssh-keygen -t ed25519 -N "" -f $keyfile -C $USER@$hostname_new
     fi
     echo
 }
