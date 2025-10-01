@@ -31,7 +31,7 @@ All necessary input data will be requested during the execution of the tool.
 Immediately after installing the NixOS (preferably without installing the GUI), run the following command:
 
 ```bash
-nix-shell https://github.com/radimih/nixos-starter/releases/latest/download/starter.tgz
+nix-shell https://github.com/radimih/nixos-starter/archive/main.tar.gz
 ```
 
 Next, run the following commands to make the changes in the NixOS configuration take effect:
