@@ -5,37 +5,37 @@ set -euo pipefail
 DOTFILES_SUBDIR=starter-dotfiles
 NIXOS_CONFIG_FILE=/etc/nixos/configuration.nix
 
-main() {
-
-    local begin_msg="
+START_MSG="
 This script does the following:
 
-1. Updates the file \033[1mNixOS configuration file\033[22m ($NIXOS_CONFIG_FILE):
+1. Updates the\033[1m NixOS configuration file\033[22m (\033[2m$NIXOS_CONFIG_FILE\033[22m):
      - changes default hostname
      - enables experimental features
-     - adds the git program to the system packages
+     - adds the\033[2m git\033[22m program to the system packages
 
-2. Generates host and user \033[1mssh keys\033[22m if they do not exist
+2. Generates host and user\033[1m ssh keys\033[22m if they do not exist
 
-3. Downloads the contents of the main branch of the \033[1mGitHub dotfiles repo\033[22m to the
+3. Downloads the contents of the main branch of the\033[1m GitHub dotfiles repo\033[22m to the
    ~/$DOTFILES_SUBDIR directory. ATTENTION! Not supported old 'master' branch.
 
 Let's go!
 ---------
 "
-    local end_msg="
+FINISH_MSG="
 Run the following commands to make the changes in the NixOS configuration take effect:
 
-  \033[1msudo nixos-rebuild switch\033[22m
-  \033[1mreboot\033[22m
+ \033[1m sudo nixos-rebuild switch\033[22m
+ \033[1m reboot\033[22m
 "
+
+main() {
 
     local hostname_current=$(sed --silent -E 's/.*hostName = "(.*)".*/\1/p' $NIXOS_CONFIG_FILE)
     local hostname_new
     local github_repo
 
     clear
-    echo -e "$begin_msg"
+    echo -e "$START_MSG"
 
     echo -n "Enter new hostname ([Enter] - leave current hostname = '$hostname_current'): "
     read -r hostname_new
@@ -48,7 +48,7 @@ Run the following commands to make the changes in the NixOS configuration take e
     step_2_generate_ssh_keys $hostname_new
     step_3_download_dotfiles "$github_repo"
 
-    echo -e "$end_msg"
+    echo -e "$FINISH_MSG"
 }
 
 step_1_update_config() {
